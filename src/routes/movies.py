@@ -13,6 +13,7 @@ from schemas.movies import (
     MovieListResponseSchema,
     MovieListItemSchema,
     MovieUpdateSchema,
+    MovieUpdateResponseSchema,
 )
 
 router = APIRouter(prefix="/movies")
@@ -196,7 +197,7 @@ async def delete_movie(movie_id: int, db: AsyncSession = Depends(get_db)):
     await db.commit()
 
 
-@router.patch("/{movie_id}/", response_model=None)
+@router.patch("/{movie_id}/", response_model=MovieUpdateResponseSchema)
 async def update_movie(
     movie_id: int,
     movie_data: MovieUpdateSchema,
@@ -250,7 +251,7 @@ async def update_movie(
 
         await db.commit()
         await db.refresh(movie)
-        return {"detail": "Movie updated successfully."}
+        return MovieUpdateResponseSchema(detail="Movie updated successfully.")
 
     except IntegrityError:
         await db.rollback()

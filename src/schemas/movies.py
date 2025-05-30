@@ -91,3 +91,7 @@ class MovieListResponseSchema(BaseModel):
     next_page: Optional[str]
     total_pages: int
     total_items: int
+
+
+class MovieUpdateResponseSchema(BaseModel):
+    detail: str
